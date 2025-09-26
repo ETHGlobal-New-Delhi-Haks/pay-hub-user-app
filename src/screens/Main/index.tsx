@@ -1,6 +1,7 @@
 import { Box, Button, Sheet } from '@mui/joy';
 import { AppBar } from '../../components/AppBar';
 import { BalanceCard } from './BalanceCard';
+import { Settings } from 'lucide-react';
 
 type Props = {
   navigate: (to: string) => void;
@@ -12,7 +13,11 @@ export function MainPage({ navigate }: Props) {
       <AppBar
         content={<BalanceCard />}
         isHome
-        right={<Button onClick={() => navigate('#/settings')}>Setting</Button>}
+        right={
+          <Box onClick={() => navigate('#/settings')}>
+            <Settings color='#fff'/>
+          </Box>
+        }
       />
 
       <Box>

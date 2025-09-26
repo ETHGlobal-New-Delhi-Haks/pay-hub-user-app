@@ -1,6 +1,7 @@
 import { Sheet, Box, Typography, IconButton } from '@mui/joy';
 import { ArrowLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
+import theme from '../../theme';
 
 type Props = {
   title?: string;
@@ -21,7 +22,7 @@ export function AppBar({ content, right, isHome, onBack, title }: Props) {
         borderBottomRightRadius: isHome ? 50 : 16,
         minHeight: 68,
         background: (t) =>
-          `linear-gradient(135deg, ${t.vars.palette.primary[500]} 0%, ${t.vars.palette.primary[700]} 100%)`,
+          `linear-gradient(135deg, ${t.vars.palette.primary[700]} 0%, ${t.vars.palette.primary[900]} 100%)`,
       }}
     >
       <Box
@@ -37,8 +38,8 @@ export function AppBar({ content, right, isHome, onBack, title }: Props) {
             PayPal
           </Typography>
         ) : (
-          <IconButton variant="plain" color="neutral" onClick={onBack}>
-            <ArrowLeft />
+          <IconButton variant="plain" onClick={onBack}>
+            <ArrowLeft color={theme.palette.common.white} />
           </IconButton>
         )}
 

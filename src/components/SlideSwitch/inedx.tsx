@@ -10,6 +10,7 @@ type Props = PropsWithChildren<{
 
 export function SlideSwitch({ index, children, height = 0, sx }: Props) {
   const count = Children.count(children);
+
   return (
     <Box
       sx={{

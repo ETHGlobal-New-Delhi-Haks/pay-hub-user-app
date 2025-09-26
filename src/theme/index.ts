@@ -1,19 +1,45 @@
 import { extendTheme } from '@mui/joy/styles';
 
+declare module '@mui/joy/styles' {
+  interface Palette {
+    card: {
+      bg: string;
+      shadow: string
+    };
+  }
+}
+
 const theme = extendTheme({
   colorSchemes: {
+    dark: {
+      palette: {
+        card: {
+          bg: 'rgba(255, 255, 255, 0.05)',
+          shadow: ''
+        },
+      },
+    },
     light: {
       palette: {
-        primary: {
-          500: '#4C88FF',
-          600: '#3C72E6',
-          700: '#2F5FC7',
-          800: '#274E9E',
+        card: {
+          bg: '',
+          shadow: '3px 4px 12px -8px #00000080;',
         },
       },
     },
   },
-  radius: { sm: '8px', md: '12px', lg: '20px' },
+  components: {
+    JoyCard: {
+      styleOverrides: {
+        root: ({ theme }) => ({
+          backgroundColor: theme.vars.palette.card.bg,
+          color: theme.vars.palette.primary.softColor,
+          border: 'none',
+          boxShadow: theme.vars.palette.card.shadow,
+        }),
+      },
+    },
+  },
 });
 
 export default theme;

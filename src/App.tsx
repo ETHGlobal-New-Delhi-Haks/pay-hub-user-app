@@ -36,7 +36,7 @@ export default function App() {
       <SlideSwitch index={activeIndex} height="100dvh">
         <LoginPage onLogin={() => navigate('#/app')} />
         <MainPage navigate={navigate} />
-        <SettingsPage onBack={() => navigate('#/app')} />
+        <SettingsPage onBack={() => navigate('#/app')} onLogout={()=>navigate('#/login')} />
         <PaymentType onBack={() => navigate('#/app')} />
       </SlideSwitch>
     </CssVarsProvider>
