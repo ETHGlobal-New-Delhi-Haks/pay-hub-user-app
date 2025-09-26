@@ -1,17 +1,17 @@
-import { Sheet, Card, Typography } from '@mui/joy';
+import { Sheet, Card, Typography, Box } from '@mui/joy';
 import { AppBar } from '../../components/AppBar';
-import { Box } from 'lucide-react';
 
 type Props = {
   onBack: VoidFunction;
+  wallet: string;
 };
 
-export function WalletPage({ onBack }: Props) {
+export function WalletPage({ onBack, wallet }: Props) {
   return (
     <Sheet sx={{ minHeight: '100dvh' }}>
-      <AppBar title="Payment" onBack={onBack} right={<Box />} />
+      <AppBar title="Wallet" onBack={onBack} right={<Box />} />
       <Card sx={{ m: 2, p: 3, borderRadius: 16 }}>
-        <Typography level="h4">Add wallet</Typography>
+        <Typography level="h4">{wallet}</Typography>
       </Card>
     </Sheet>
   );
