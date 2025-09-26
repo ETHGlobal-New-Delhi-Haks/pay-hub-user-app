@@ -1,44 +1,100 @@
-import * as React from 'react';
 import { CssVarsProvider } from '@mui/joy/styles';
 import { SlideSwitch } from './components/SlideSwitch/inedx';
 import theme from './theme';
 import { LoginPage } from './screens/Login';
-import { PaymentType } from './screens/PaymetType';
+import { PayPage } from './screens/Pay';
 import { MainPage } from './screens/Main';
 import { SettingsPage } from './screens/Settings';
-
+import { WalletPage } from './screens/Wallet';
+import { useCallback, useEffect, useState } from 'react';
 
 function useHashRoute() {
-  const [hash, setHash] = React.useState(
-    () => window.location.hash || '#/login'
-  );
-  React.useEffect(() => {
+  const [hash, setHash] = useState(() => window.location.hash || '#/login');
+  const [activeScreen, setActiveScreen] = useState('');
+
+  useEffect(() => {
     const onHash = () => setHash(window.location.hash || '#/login');
     window.addEventListener('hashchange', onHash);
     return () => window.removeEventListener('hashchange', onHash);
   }, []);
-  const navigate = React.useCallback((to: string) => {
+
+  const navigate = useCallback((to: string) => {
     if (!to.startsWith('#')) to = '#' + to;
-    if (window.location.hash === to) return; // keep transition stable
+    if (window.location.hash === to) return;
     window.location.hash = to;
   }, []);
-  return { hash, navigate };
+
+  const route = hash.replace(/^#\//, '');
+
+  useEffect(() => {
+    if (!['login', 'app'].includes(route)) {
+      setActiveScreen(route);
+    }
+  }, [route]);
+
+  return { hash, navigate, route: hash.replace(/^#\//, ''), activeScreen };
+}
+function useAppRouter() {
+  const { route, navigate, activeScreen } = useHashRoute();
+
+  const activeIndex = route === 'app' ? 0 : 1;
+
+  const navigateToApp = useCallback(
+    (screen: string) => {
+      navigate(`#/${screen}`);
+    },
+    [navigate]
+  );
+
+  const logout = useCallback(() => {
+    navigate('#/login');
+  }, [navigate]);
+
+  return {
+    activeIndex,
+    navigateToApp,
+    logout,
+    activeScreen,
+  };
+}
+
+function AppRouter() {
+  const { activeIndex, navigateToApp, logout, activeScreen } = useAppRouter();
+  function getActiveScreen(screen: string) {
+    switch (screen) {
+      case 'settings':
+        return (
+          <SettingsPage onBack={() => navigateToApp('app')} onLogout={logout} />
+        );
+      case 'payment':
+        return <PayPage onBack={() => navigateToApp('app')} />;
+      case 'wallet':
+        return <WalletPage onBack={() => navigateToApp('app')} />;
+      default:
+        return <MainPage navigate={navigateToApp} />;
+    }
+  }
+
+  return (
+    <SlideSwitch index={activeIndex} height="100dvh">
+      <MainPage navigate={navigateToApp} />
+      {getActiveScreen(activeScreen)}
+    </SlideSwitch>
+  );
 }
 
 export default function App() {
-  const { hash, navigate } = useHashRoute();
-  const route = hash.replace(/^#\//, '');
-  const pages = ['login', 'app', 'settings', 'payment'];
-  const activeIndex = Math.max(0, pages.indexOf(route));
+  const { route, navigate } = useHashRoute();
+
+  const isLoggedIn = !['login', ''].includes(route);
 
   return (
     <CssVarsProvider theme={theme} defaultMode="light">
-      <SlideSwitch index={activeIndex} height="100dvh">
+      {isLoggedIn ? (
+        <AppRouter />
+      ) : (
         <LoginPage onLogin={() => navigate('#/app')} />
-        <MainPage navigate={navigate} />
-        <SettingsPage onBack={() => navigate('#/app')} onLogout={()=>navigate('#/login')} />
-        <PaymentType onBack={() => navigate('#/app')} />
-      </SlideSwitch>
+      )}
     </CssVarsProvider>
   );
 }

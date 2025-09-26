@@ -1,4 +1,4 @@
-import { Sheet, Box, Typography, IconButton } from '@mui/joy';
+import { Sheet, Box, Typography } from '@mui/joy';
 import { ArrowLeft } from 'lucide-react';
 import type { ReactNode } from 'react';
 import theme from '../../theme';
@@ -38,9 +38,9 @@ export function AppBar({ content, right, isHome, onBack, title }: Props) {
             PayPal
           </Typography>
         ) : (
-          <IconButton variant="plain" onClick={onBack}>
+          <Box onClick={onBack}>
             <ArrowLeft color={theme.palette.common.white} />
-          </IconButton>
+          </Box>
         )}
 
         {title && (
