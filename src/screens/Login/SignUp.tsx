@@ -141,13 +141,14 @@ export function SignUp({ toggleSignScreen, onLogin }: LoginScreenProps) {
             </Typography>
           </Box>
         </Box>
-        {/* @ts-ignore */}
+        {/*  @ts-ignore */}
         <Snackbar
           autoHideDuration={3000}
           open={!!requestError}
           color="danger"
+          component="div"
           variant="solid"
-          vertical="top"
+          anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
           horizontal="center"
           onClose={(_, reason) => {
             if (reason === 'clickaway') {

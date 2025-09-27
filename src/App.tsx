@@ -13,6 +13,7 @@ import { WagmiProvider, type Config } from 'wagmi';
 import { arbitrum, mainnet, solana } from '@reown/appkit/networks';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
+import { setAuthToken } from './api/axios';
 
 const queryClient = new QueryClient();
 
@@ -51,41 +52,38 @@ interface ParsedRoute {
   fullPath: string;
 }
 
-function parseRoute(route: string): ParsedRoute {
-  if (!route || route === '') {
-    return { screen: 'app', params: {}, fullPath: 'app' };
-  }
-
-  const parts = route.split('/');
-  const screen = parts[0];
-  const params: RouteParams = {};
-
+function parseRoute(path: string): ParsedRoute {
+  const segments = path.split('/').filter(Boolean);
+  const screen = segments[0] || 'app';
+  
+  let params: RouteParams = {};
+  
   switch (screen) {
     case 'wallet':
-      if (parts[1]) {
-        params.address = parts[1];
+      if (segments.length === 3) {
+        // wallet/address/chain
+        params = {
+          address: segments[1],
+          chain: segments[2]
+        };
       }
       break;
     case 'payment':
-      if (parts[1]) {
-        params.transactionId = parts[1];
+      if (segments.length === 2) {
+        params = { transactionId: segments[1] };
       }
       break;
     case 'user':
-      if (parts[1]) {
-        params.userId = parts[1];
+      if (segments.length === 2) {
+        params = { userId: segments[1] };
       }
       break;
-    default:
-      parts.slice(1).forEach((part, index) => {
-        params[`param${index}`] = part;
-      });
   }
-
+  
   return {
     screen,
     params,
-    fullPath: route,
+    fullPath: path
   };
 }
 
@@ -96,7 +94,7 @@ function buildRoute(screen: string, params?: RouteParams): string {
 
   switch (screen) {
     case 'wallet':
-      return params.address ? `wallet/${params.address}` : 'wallet';
+      return params.address ? `wallet/${params.address}/${params.chain}` : 'wallet';
     case 'payment':
       return params.transactionId
         ? `payment/${params.transactionId}`
@@ -209,6 +207,8 @@ function AppRouter() {
   const createScreen = (routeInfo: ParsedRoute) => {
     const { params, fullPath } = routeInfo;
 
+    console.log(params, 'params')
+
     switch (fullPath) {
       case 'settings':
         return (
@@ -222,16 +222,16 @@ function AppRouter() {
             key={fullPath}
             onBack={goBack}
             toAddWallet={() => navigateToApp('add-wallet')}
-            onWalletSelect={(address: string) =>
-              navigateToApp('wallet', { address })
+            onWalletSelect={(address: string, chain: string) =>
+              navigateToApp('wallet', { address, chain })
             }
           />
         );
       case 'add-wallet':
         return <AddWalletPage key={fullPath} onBack={goBack} />;
-      case `wallet/${params.address}`:
+      case `wallet/${params.address}/${params.chain}`:
         return (
-          <WalletPage key={fullPath} onBack={goBack} wallet={params.address} />
+          <WalletPage key={fullPath} onBack={goBack} wallet={params.address} chain={params.chain} />
         );
 
       case 'app':
@@ -256,6 +256,10 @@ export default function App() {
     const accessToken = localStorage.getItem('access_token');
     if (!accessToken && route !== 'login' && route !== '') {
       navigate('login');
+    }
+
+    if(accessToken) {
+      setAuthToken(accessToken)
     }
   }, []);
 

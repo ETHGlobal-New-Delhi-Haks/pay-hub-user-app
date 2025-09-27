@@ -178,8 +178,7 @@ export function SignIn({ toggleSignScreen, onLogin }: LoginScreenProps) {
         open={!!requestError}
         color="danger"
         variant="solid"
-        vertical="top"
-        horizontal="center"
+        anchorOrigin={{ vertical: 'top', horizontal: 'center' }}
         onClose={(_, reason) => {
           if (reason === 'clickaway') {
             return;
