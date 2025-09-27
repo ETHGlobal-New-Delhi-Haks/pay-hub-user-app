@@ -21,8 +21,10 @@ type Props = {
 
 export function SettingsPage({ onBack, onLogout }: Props) {
   const [currency, setCurrency] = useState('USD');
-  const { mode, setMode } = useColorScheme();
+  const { mode, setMode, systemMode } = useColorScheme();
   const [username, setUsername] = useState('vadikforz');
+
+  const selectedMode = mode === 'system' ? systemMode : mode;
 
   return (
     <Sheet sx={{ minHeight: '100dvh' }}>
@@ -76,16 +78,24 @@ export function SettingsPage({ onBack, onLogout }: Props) {
             <Box sx={{ display: 'flex' }}>
               <Button
                 size="sm"
-                sx={{ borderTopRightRadius: 0, borderBottomRightRadius: 0 }}
-                variant={mode === 'light' ? 'solid' : 'outlined'}
+                sx={{
+                  borderTopRightRadius: 0,
+                  borderBottomRightRadius: 0,
+                  boxShadow: 'none',
+                }}
+                variant={selectedMode === 'light' ? 'solid' : 'outlined'}
                 onClick={() => setMode('light')}
               >
                 <Sun />
               </Button>
               <Button
-                sx={{ borderTopLeftRadius: 0, borderBottomLeftRadius: 0 }}
+                sx={{
+                  borderTopLeftRadius: 0,
+                  borderBottomLeftRadius: 0,
+                  boxShadow: 'none',
+                }}
                 size="sm"
-                variant={mode === 'dark' ? 'solid' : 'outlined'}
+                variant={selectedMode === 'dark' ? 'solid' : 'outlined'}
                 onClick={() => setMode('dark')}
               >
                 <Moon />

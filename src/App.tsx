@@ -1,5 +1,3 @@
-import { CssVarsProvider } from '@mui/joy/styles';
-import theme from './theme';
 import { LoginPage } from './screens/Login';
 import { PayPage } from './screens/Pay';
 import { MainPage } from './screens/Main';
@@ -183,6 +181,7 @@ function AppRouter() {
   const { stack, currentIndex, navigateToApp, goBack, logout } =
     useNavigationStack();
 
+
   const createScreen = (routeInfo: ParsedRoute) => {
     const { params, fullPath } = routeInfo;
 
@@ -237,12 +236,12 @@ export default function App() {
   const isLoggedIn = !['login', ''].includes(route);
 
   return (
-    <CssVarsProvider theme={theme} defaultMode="light">
+    <>
       {isLoggedIn ? (
         <AppRouter />
       ) : (
         <LoginPage onLogin={() => navigate('app')} />
       )}
-    </CssVarsProvider>
+    </>
   );
 }
