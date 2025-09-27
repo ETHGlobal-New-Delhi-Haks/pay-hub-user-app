@@ -63,7 +63,7 @@ export function MainPage({ navigate }: Props) {
           >
             <Wallet size={50} />
             <Typography sx={{ color: theme.palette.common.white }} level="h3">
-              Add Wallet
+              Wallet
             </Typography>
           </Box>
         </Button>

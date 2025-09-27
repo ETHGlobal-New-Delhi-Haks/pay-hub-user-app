@@ -7,6 +7,39 @@ import { useCallback, useEffect, useState } from 'react';
 import { AddWalletPage } from './screens/AddWallet';
 import { SlideSwitch } from './components/SlideSwitch';
 import { WalletPage } from './screens/Wallet';
+import { createAppKit } from '@reown/appkit/react';
+
+import { WagmiProvider, type Config } from 'wagmi';
+import { arbitrum, mainnet, solana } from '@reown/appkit/networks';
+import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
+import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
+
+const queryClient = new QueryClient();
+
+const projectId = 'a65ae05148a220caba0c80f70097e9d7';
+
+const metadata = {
+  name: 'AppKit',
+  description: 'AppKit Example',
+  url: 'https://example.com',
+  icons: ['https://avatars.githubusercontent.com/u/179229932'],
+};
+
+const wagmiAdapter = new WagmiAdapter({
+  networks: [mainnet, arbitrum, solana],
+  projectId,
+  ssr: false,
+});
+
+createAppKit({
+  adapters: [wagmiAdapter],
+  networks: [mainnet, arbitrum, solana],
+  projectId,
+  metadata,
+  features: {
+    analytics: true,
+  },
+});
 
 interface RouteParams {
   [key: string]: string;
@@ -27,7 +60,6 @@ function parseRoute(route: string): ParsedRoute {
   const screen = parts[0];
   const params: RouteParams = {};
 
-  // Парсим параметры для разных экранов
   switch (screen) {
     case 'wallet':
       if (parts[1]) {
@@ -44,9 +76,7 @@ function parseRoute(route: string): ParsedRoute {
         params.userId = parts[1];
       }
       break;
-    // Добавляйте другие экраны с параметрами здесь
     default:
-      // Для остальных экранов просто собираем все части как параметры
       parts.slice(1).forEach((part, index) => {
         params[`param${index}`] = part;
       });
@@ -64,7 +94,6 @@ function buildRoute(screen: string, params?: RouteParams): string {
     return screen;
   }
 
-  // Специальная логика для разных экранов
   switch (screen) {
     case 'wallet':
       return params.address ? `wallet/${params.address}` : 'wallet';
@@ -128,22 +157,18 @@ function useNavigationStack() {
   const currentIndex = stack.length - 1;
 
   useEffect(() => {
-    // Проверяем, есть ли уже такой полный путь в стеке
     const existingIndex = stack.findIndex(
       (item) => item.fullPath === currentRoute.fullPath
     );
 
     if (existingIndex !== -1 && existingIndex < stack.length - 1) {
-      // Возврат к существующему экрану - обрезаем стек
       setStack((prev) => prev.slice(0, existingIndex + 1));
       return;
     }
 
-    // Если это новый экран или возврат на главный
     if (currentRoute.screen === 'app') {
       setStack([{ screen: 'app', params: {}, fullPath: 'app' }]);
     } else if (existingIndex === -1) {
-      // Добавляем новый экран в стек
       setStack((prev) => [...prev, currentRoute]);
     }
   }, [currentRoute.fullPath]);
@@ -181,7 +206,6 @@ function AppRouter() {
   const { stack, currentIndex, navigateToApp, goBack, logout } =
     useNavigationStack();
 
-
   const createScreen = (routeInfo: ParsedRoute) => {
     const { params, fullPath } = routeInfo;
 
@@ -198,18 +222,13 @@ function AppRouter() {
             key={fullPath}
             onBack={goBack}
             toAddWallet={() => navigateToApp('add-wallet')}
-          />
-        );
-      case 'add-wallet':
-        return (
-          <AddWalletPage
-            key={fullPath}
-            onBack={goBack}
             onWalletSelect={(address: string) =>
               navigateToApp('wallet', { address })
             }
           />
         );
+      case 'add-wallet':
+        return <AddWalletPage key={fullPath} onBack={goBack} />;
       case `wallet/${params.address}`:
         return (
           <WalletPage key={fullPath} onBack={goBack} wallet={params.address} />
@@ -236,12 +255,16 @@ export default function App() {
   const isLoggedIn = !['login', ''].includes(route);
 
   return (
-    <>
-      {isLoggedIn ? (
-        <AppRouter />
-      ) : (
-        <LoginPage onLogin={() => navigate('app')} />
-      )}
-    </>
+    <WagmiProvider config={wagmiAdapter.wagmiConfig as Config}>
+      <QueryClientProvider client={queryClient}>
+        <>
+          {isLoggedIn ? (
+            <AppRouter />
+          ) : (
+            <LoginPage onLogin={() => navigate('app')} />
+          )}
+        </>
+      </QueryClientProvider>
+    </WagmiProvider>
   );
 }

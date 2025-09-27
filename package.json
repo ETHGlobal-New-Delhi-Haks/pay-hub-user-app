@@ -18,9 +18,14 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@mui/joy": "^5.0.0-beta.52",
+    "@reown/appkit": "^1.8.7",
+    "@reown/appkit-adapter-wagmi": "^1.8.7",
+    "@tanstack/react-query": "^5.90.2",
     "lucide-react": "^0.544.0",
     "react": "^19.1.1",
-    "react-dom": "^19.1.1"
+    "react-dom": "^19.1.1",
+    "viem": "^2.37.8",
+    "wagmi": "^2.17.5"
   },
   "devDependencies": {
     "@eslint/js": "^9.36.0",

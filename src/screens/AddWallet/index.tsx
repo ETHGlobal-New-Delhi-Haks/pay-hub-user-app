@@ -1,33 +1,82 @@
 import { Sheet, Card, Typography, Button, Box } from '@mui/joy';
 import { AppBar } from '../../components/AppBar';
-import { useState } from 'react';
+import { useAppKit } from '@reown/appkit/react';
+import { EtherIcon } from '../../components/Icons/Ether';
+import { SolanaIcon } from '../../components/Icons/Solana';
+import { FlowIcon } from '../../components/Icons/Flow';
 
 type Props = {
   onBack: VoidFunction;
-  onWalletSelect: (wallet: string) => void;
 };
 
-export function AddWalletPage({ onBack, onWalletSelect }: Props) {
-  const [activeStep] = useState('network');
+export function AddWalletPage({ onBack }: Props) {
+  const { open } = useAppKit();
 
   return (
     <Sheet sx={{ minHeight: '100dvh' }}>
       <AppBar title="Add wallet" onBack={onBack} right={<Box />} />
-      {activeStep === 'network' && (
-        <Card sx={{ m: 2, p: 3, borderRadius: 16 }}>
-          <Typography level="h4">Select blockchain</Typography>
-          <Button
-            fullWidth
-            size="lg"
-            sx={{
-              py: 2,
-              mt: 2,
-              borderRadius: 'xl',
-            }}
-            onClick={() => onWalletSelect('0xasdh827r9823or2l3rl')}
-          >0xasdh827r9823or2l3rl</Button>
-        </Card>
-      )}
+
+      <Card sx={{ m: 2, p: 3, borderRadius: 16 }}>
+        <Typography level="h4">Select blockchain</Typography>
+        <Button
+          fullWidth
+          size="lg"
+          variant="outlined"
+          sx={{
+            py: 2,
+            mt: 2,
+            borderRadius: 'xl',
+            justifyContent: 'flex-start',
+            gap: 2,
+          }}
+          onClick={() =>
+            open({
+              view: 'Connect',
+              namespace: 'eip155',
+            })
+          }
+        >
+          <EtherIcon />
+          EVM
+        </Button>
+
+        <Button
+          fullWidth
+          size="lg"
+          variant="outlined"
+          sx={{
+            py: 2,
+            borderRadius: 'xl',
+            justifyContent: 'flex-start',
+            gap: 2,
+          }}
+          onClick={() =>
+            open({
+              view: 'Connect',
+              namespace: 'solana',
+            })
+          }
+        >
+          <SolanaIcon />
+          Solana
+        </Button>
+
+        <Button
+          fullWidth
+          size="lg"
+          variant="outlined"
+          disabled
+          sx={{
+            py: 2,
+            borderRadius: 'xl',
+            justifyContent: 'flex-start',
+            gap: 2,
+          }}
+        >
+          <FlowIcon />
+          Flow
+        </Button>
+      </Card>
     </Sheet>
   );
 }
