@@ -13,6 +13,7 @@ import {
 import { AppBar } from '../../components/AppBar';
 import { useState } from 'react';
 import { Moon, Plus, Sun } from 'lucide-react';
+import { setAuthToken } from '../../api/axios';
 
 type Props = {
   onBack: VoidFunction;
@@ -25,6 +26,12 @@ export function SettingsPage({ onBack, onLogout }: Props) {
   const [username, setUsername] = useState('vadikforz');
 
   const selectedMode = mode === 'system' ? systemMode : mode;
+
+  const handleLogout = () => {
+    setAuthToken('');
+    localStorage.removeItem('access_token');
+    onLogout();
+  };
 
   return (
     <Sheet sx={{ minHeight: '100dvh' }}>
@@ -180,7 +187,7 @@ export function SettingsPage({ onBack, onLogout }: Props) {
             <Typography level="body-md">
               Logged in as <b>vadikforz@gmail.com</b>
             </Typography>
-            <Button variant="outlined" color="danger" onClick={onLogout}>
+            <Button variant="outlined" color="danger" onClick={handleLogout}>
               Log out
             </Button>
           </Box>

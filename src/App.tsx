@@ -252,6 +252,13 @@ function AppRouter() {
 export default function App() {
   const { route, navigate } = useHashRoute();
 
+  useEffect(() => {
+    const accessToken = localStorage.getItem('access_token');
+    if (!accessToken && route !== 'login' && route !== '') {
+      navigate('login');
+    }
+  }, []);
+
   const isLoggedIn = !['login', ''].includes(route);
 
   return (
