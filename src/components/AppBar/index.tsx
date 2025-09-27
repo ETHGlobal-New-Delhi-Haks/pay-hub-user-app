@@ -21,6 +21,7 @@ export function AppBar({ content, right, isHome, onBack, title }: Props) {
         borderBottomLeftRadius: isHome ? 0 : 16,
         borderBottomRightRadius: isHome ? 50 : 16,
         minHeight: 68,
+        pt: 'var(--safe-top)',
         background: (t) =>
           `linear-gradient(135deg, ${t.vars.palette.primary[700]} 0%, ${t.vars.palette.primary[900]} 100%)`,
       }}
