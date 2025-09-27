@@ -63,9 +63,7 @@ export function WalletsPage({ onBack, toAddWallet, onWalletSelect }: Props) {
                     ),
                   BigNumber(0)
                 );
-                if (!totalBalance.isGreaterThan(0)) {
-                  return;
-                }
+
                 return (
                   <ListItem
                     key={wallet}
