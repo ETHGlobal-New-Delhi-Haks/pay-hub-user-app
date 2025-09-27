@@ -19,11 +19,13 @@ export const useAddWallet = () => {
   const { allAccounts } = useAppKitAccount();
 
   useEffect(() => {
-    const newAddress = allAccounts.find((acc) =>
-      data?.data
-        ?.map((w) => w.attributes.address.toLowerCase())
-        .includes(acc.address.toLowerCase())
+    const newAddress = allAccounts.find(
+      (acc) =>
+        !data?.data
+          ?.map((w) => w.attributes.address.toLowerCase())
+          .includes(acc.address.toLowerCase())
     );
+
     if (newAddress) {
       void addWallet({
         type: newAddress.namespace === 'solana' ? newAddress.namespace : 'evm',

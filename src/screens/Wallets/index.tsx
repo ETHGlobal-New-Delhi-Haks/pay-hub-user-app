@@ -53,13 +53,12 @@ export function WalletsPage({ onBack, toAddWallet, onWalletSelect }: Props) {
           <List size="lg" sx={{ '--ListItemDecorator-size': '36px' }}>
             {Object.entries(data).map(([wallet, config]) =>
               Object.entries(config).map(([chain, tokens]) => {
-
                 const totalBalance = Object.values(tokens).reduce(
                   (prev, acc) =>
                     prev.plus(
-                      BigNumber(acc.balance).multipliedBy(
-                        acc.data.priceUSD || 0
-                      )
+                      BigNumber(acc.balance)
+                        .dividedBy(acc.data.decimals || 18)
+                        .multipliedBy(acc.data.priceUSD || 0)
                     ),
                   BigNumber(0)
                 );
@@ -94,7 +93,7 @@ export function WalletsPage({ onBack, toAddWallet, onWalletSelect }: Props) {
                       </Typography>
                     </ListItemContent>
                     <ListItemContent>
-                      <Typography>~{totalBalance.toFormat()}$</Typography>
+                      <Typography>~{totalBalance.toFixed(2)}$</Typography>
                     </ListItemContent>
                   </ListItem>
                 );
@@ -114,7 +113,7 @@ export function WalletsPage({ onBack, toAddWallet, onWalletSelect }: Props) {
                   },
                 }}
               >
-                <Skeleton height={27} variant='rectangular'></Skeleton>
+                <Skeleton height={27} variant="rectangular"></Skeleton>
               </ListItem>
             ))}
           </List>

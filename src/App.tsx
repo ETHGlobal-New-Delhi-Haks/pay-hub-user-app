@@ -39,6 +39,10 @@ createAppKit({
   metadata,
   features: {
     analytics: true,
+    socials: false,
+    email: false,
+    onramp: false,
+    swaps: false,
   },
 });
 
@@ -55,16 +59,16 @@ interface ParsedRoute {
 function parseRoute(path: string): ParsedRoute {
   const segments = path.split('/').filter(Boolean);
   const screen = segments[0] || 'app';
-  
+
   let params: RouteParams = {};
-  
+
   switch (screen) {
     case 'wallet':
       if (segments.length === 3) {
         // wallet/address/chain
         params = {
           address: segments[1],
-          chain: segments[2]
+          chain: segments[2],
         };
       }
       break;
@@ -79,11 +83,11 @@ function parseRoute(path: string): ParsedRoute {
       }
       break;
   }
-  
+
   return {
     screen,
     params,
-    fullPath: path
+    fullPath: path,
   };
 }
 
@@ -94,7 +98,9 @@ function buildRoute(screen: string, params?: RouteParams): string {
 
   switch (screen) {
     case 'wallet':
-      return params.address ? `wallet/${params.address}/${params.chain}` : 'wallet';
+      return params.address
+        ? `wallet/${params.address}/${params.chain}`
+        : 'wallet';
     case 'payment':
       return params.transactionId
         ? `payment/${params.transactionId}`
@@ -207,7 +213,7 @@ function AppRouter() {
   const createScreen = (routeInfo: ParsedRoute) => {
     const { params, fullPath } = routeInfo;
 
-    console.log(params, 'params')
+    console.log(params, 'params');
 
     switch (fullPath) {
       case 'settings':
@@ -231,7 +237,12 @@ function AppRouter() {
         return <AddWalletPage key={fullPath} onBack={goBack} />;
       case `wallet/${params.address}/${params.chain}`:
         return (
-          <WalletPage key={fullPath} onBack={goBack} wallet={params.address} chain={params.chain} />
+          <WalletPage
+            key={fullPath}
+            onBack={goBack}
+            wallet={params.address}
+            chain={params.chain}
+          />
         );
 
       case 'app':
@@ -258,8 +269,9 @@ export default function App() {
       navigate('login');
     }
 
-    if(accessToken) {
-      setAuthToken(accessToken)
+    if (accessToken) {
+      setAuthToken(accessToken);
+      navigate('app');
     }
   }, []);
 

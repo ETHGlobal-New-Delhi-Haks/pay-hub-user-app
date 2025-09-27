@@ -23,7 +23,6 @@ type Props = {
 };
 
 export function WalletPage({ onBack, wallet, chain }: Props) {
-  console.log(wallet, 'wallet');
   const { data, isFetched } = useFetchBalances();
   return (
     <Sheet sx={{ minHeight: '100dvh' }}>
@@ -78,8 +77,9 @@ export function WalletPage({ onBack, wallet, chain }: Props) {
                       <Typography>
                         ~
                         {BigNumber(token?.balance)
+                          .dividedBy(token.data.decimals || 18)
                           .multipliedBy(token?.data.priceUSD)
-                          .toFormat()}
+                          .toFixed(2)}
                         $
                       </Typography>
                     </ListItemContent>
