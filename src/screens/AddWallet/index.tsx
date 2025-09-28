@@ -1,6 +1,6 @@
 import { Sheet, Card, Typography, Button, Box } from '@mui/joy';
 import { AppBar } from '../../components/AppBar';
-import { useAppKit } from '@reown/appkit/react';
+import { useAppKit, useDisconnect } from '@reown/appkit/react';
 import { EtherIcon } from '../../components/Icons/Ether';
 import { SolanaIcon } from '../../components/Icons/Solana';
 import { FlowIcon } from '../../components/Icons/Flow';
@@ -11,6 +11,7 @@ type Props = {
 
 export function AddWalletPage({ onBack }: Props) {
   const { open } = useAppKit();
+  const { disconnect } = useDisconnect();
 
   return (
     <Sheet sx={{ minHeight: '100dvh' }}>
@@ -29,12 +30,17 @@ export function AddWalletPage({ onBack }: Props) {
             justifyContent: 'flex-start',
             gap: 2,
           }}
-          onClick={() =>
-            open({
-              view: 'Connect',
-              namespace: 'eip155',
-            })
-          }
+          onClick={() => {
+            disconnect();
+            setTimeout(() => {
+              open({
+                view: 'Connect',
+                namespace: 'eip155',
+              });
+
+              onBack();
+            }, 500);
+          }}
         >
           <EtherIcon />
           EVM
@@ -44,18 +50,24 @@ export function AddWalletPage({ onBack }: Props) {
           fullWidth
           size="lg"
           variant="outlined"
+          disabled
           sx={{
             py: 2,
             borderRadius: 'xl',
             justifyContent: 'flex-start',
             gap: 2,
           }}
-          onClick={() =>
-            open({
-              view: 'Connect',
-              namespace: 'solana',
-            })
-          }
+          onClick={() => {
+            disconnect();
+            setTimeout(() => {
+              open({
+                view: 'Connect',
+                namespace: 'solana',
+              });
+
+              onBack();
+            }, 500);
+          }}
         >
           <SolanaIcon />
           Solana

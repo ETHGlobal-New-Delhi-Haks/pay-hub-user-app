@@ -3,20 +3,21 @@ import { useAppKitAccount } from '@reown/appkit/react';
 import { useEffect } from 'react';
 import { useFetchMyWallets } from '../../api/wallet';
 
-const addWallet = async (wallet: {
-  type: 'evm' | 'solana';
-  wallet: string;
-}) => {
-  try {
-    await axiosInstance.post('/wallets/add', wallet);
-  } catch (error) {
-    console.log(error);
-  }
-};
-
 export const useAddWallet = () => {
-  const { isFetched, data } = useFetchMyWallets();
+  const { isFetched, data, refetch } = useFetchMyWallets();
   const { allAccounts } = useAppKitAccount();
+
+  const addWallet = async (wallet: {
+    type: 'evm' | 'solana';
+    wallet: string;
+  }) => {
+    try {
+      await axiosInstance.post('/wallets/add', wallet);
+      refetch();
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   useEffect(() => {
     const newAddress = allAccounts.find(

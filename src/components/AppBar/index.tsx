@@ -36,7 +36,7 @@ export function AppBar({ content, right, isHome, onBack, title }: Props) {
         {/* Left side: back arrow or logo */}
         {isHome ? (
           <Typography level="h4" sx={{ color: '#fff' }}>
-            PayPal
+            PayHub
           </Typography>
         ) : (
           <Box onClick={onBack}>

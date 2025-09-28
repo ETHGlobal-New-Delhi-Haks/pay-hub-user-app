@@ -3,6 +3,7 @@ import { AppBar } from '../../components/AppBar';
 import { BalanceCard } from './BalanceCard';
 import { Coins, Settings, Wallet } from 'lucide-react';
 import theme from '../../theme';
+import TransactionHistory from './TransactionHistory';
 
 type Props = {
   navigate: (to: string) => void;
@@ -10,7 +11,14 @@ type Props = {
 
 export function MainPage({ navigate }: Props) {
   return (
-    <Sheet sx={{ minHeight: '100dvh' }}>
+    <Sheet
+      sx={{
+        minHeight: '100dvh',
+        height: '100vh',
+        display: 'flex',
+        flexDirection: 'column',
+      }}
+    >
       <AppBar
         content={<BalanceCard />}
         isHome
@@ -21,7 +29,16 @@ export function MainPage({ navigate }: Props) {
         }
       />
 
-      <Box sx={{ display: 'flex', alignItems: 'center', gap: 2, py: 3, px: 2 }}>
+      <Box
+        sx={{
+          display: 'flex',
+          alignItems: 'center',
+          gap: 2,
+          py: 3,
+          px: 2,
+          flexShrink: 0,
+        }}
+      >
         <Button
           onClick={() => navigate('payment')}
           fullWidth
@@ -68,6 +85,8 @@ export function MainPage({ navigate }: Props) {
           </Box>
         </Button>
       </Box>
+
+      <TransactionHistory />
     </Sheet>
   );
 }

@@ -88,7 +88,7 @@ export function SignUp({ toggleSignScreen, onLogin }: LoginScreenProps) {
             onSubmit={handleSubmit}
           >
             <Typography level="h2" sx={{ textAlign: 'center', mb: 1 }}>
-              PayPal
+              PayHub
             </Typography>
             <Box>
               <Input
