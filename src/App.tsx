@@ -14,7 +14,6 @@ import { arbitrum, mainnet, solana } from '@reown/appkit/networks';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { WagmiAdapter } from '@reown/appkit-adapter-wagmi';
 import { setAuthToken } from './api/axios';
-import BiometricUploadScreen from './screens/Biometric';
 
 const queryClient = new QueryClient();
 
@@ -215,12 +214,7 @@ function AppRouter() {
     switch (fullPath) {
       case 'settings':
         return (
-          <SettingsPage
-            key={fullPath}
-            onBack={goBack}
-            onLogout={logout}
-            goToBiometric={() => navigateToApp('biometric')}
-          />
+          <SettingsPage key={fullPath} onBack={goBack} onLogout={logout} />
         );
       case 'payment':
         return <PayPage key={fullPath} onBack={goBack} />;
@@ -246,8 +240,6 @@ function AppRouter() {
             chain={params.chain}
           />
         );
-      case 'biometric':
-        return <BiometricUploadScreen onBack={goBack} />;
 
       case 'app':
       default:

@@ -279,7 +279,6 @@ export default function TokenApprovalModal({
             </Card>
           )}
 
-          {/* Кнопки */}
           <Stack direction="row" spacing={2}>
             <Button variant="outlined" onClick={onClose} fullWidth>
               Cancel

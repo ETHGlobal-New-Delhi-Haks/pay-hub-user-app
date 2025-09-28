@@ -45,5 +45,13 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+	<key>NSCameraUsageDescription</key>
+<string>This app needs access to camera to scan your face for biometric authentication</string>
+
+<key>NSPhotoLibraryUsageDescription</key>
+<string>This app needs access to photo library to save images</string>
+
+<key>NSPhotoLibraryAddUsageDescription</key>
+<string>This app needs access to photo library to save images</string>
 </dict>
 </plist>

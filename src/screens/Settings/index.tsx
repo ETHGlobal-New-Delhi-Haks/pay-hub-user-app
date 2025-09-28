@@ -11,22 +11,25 @@ import {
   useColorScheme,
 } from '@mui/joy';
 import { AppBar } from '../../components/AppBar';
-import { useState } from 'react';
-import { Moon, Plus, Sun } from 'lucide-react';
+import { useEffect, useState } from 'react';
+import { Moon, Sun } from 'lucide-react';
 import { setAuthToken } from '../../api/axios';
 import { useFetchUser } from '../../api/user';
+import { BiometricCaptureDialog } from './BiometricCaptureDialog';
+import { BiometricAcceptingDialog } from './BiometricAcceptingDialog';
 
 type Props = {
   onBack: VoidFunction;
   onLogout: VoidFunction;
-  goToBiometric: VoidFunction;
 };
 
-export function SettingsPage({ onBack, onLogout, goToBiometric }: Props) {
+export function SettingsPage({ onBack, onLogout }: Props) {
   const { data } = useFetchUser();
+  const [openAccessModal, setOpenAccessModal] = useState(false);
+  const [openCaptureModal, setOpenCaptureModal] = useState(false);
   const [currency, setCurrency] = useState('USD');
   const { mode, setMode, systemMode } = useColorScheme();
-  const [username, setUsername] = useState('vadikforz');
+  const [username, setUsername] = useState('');
 
   const selectedMode = mode === 'system' ? systemMode : mode;
 
@@ -35,6 +38,12 @@ export function SettingsPage({ onBack, onLogout, goToBiometric }: Props) {
     localStorage.removeItem('access_token');
     onLogout();
   };
+
+  useEffect(() => {
+    if (data?.username) {
+      setUsername(data?.username);
+    }
+  }, [data?.username]);
 
   return (
     <Sheet sx={{ minHeight: '100dvh' }}>
@@ -124,30 +133,11 @@ export function SettingsPage({ onBack, onLogout, goToBiometric }: Props) {
             <Typography level="body-sm" color="neutral">
               Enabled
             </Typography>
-            <Switch />
-          </Box>
-          {/* <Box sx={{ display: 'grid', gap: 1.5, mt: 1 }}>
-            <Button
-              sx={{ width: 'fit-content', ml: 'auto' }}
-              onClick={goToBiometric}
-            >
-              Update
-            </Button>
-          </Box> */}
-
-          {/* If not uploaded */}
-
-          <Box sx={{ display: 'grid', gap: 1.5, mt: 1 }}>
-            <Typography level="body-sm" color="neutral">
-              You don't have biometric data yet
-            </Typography>
-            <Button
-              sx={{ width: 'fit-content', ml: 'auto', gap: 1 }}
-              onClick={goToBiometric}
-            >
-              Add
-              <Plus />
-            </Button>
+            <Switch
+              onChange={(event: React.ChangeEvent<HTMLInputElement>) =>
+                setOpenAccessModal(event.target.checked)
+              }
+            />
           </Box>
         </Card>
         {/* Account */}
@@ -204,6 +194,18 @@ export function SettingsPage({ onBack, onLogout, goToBiometric }: Props) {
           </Box>
         </Card>
       </Box>
+      <BiometricAcceptingDialog
+        open={openAccessModal}
+        setIsOpen={setOpenAccessModal}
+        onConfirm={() => {
+          setOpenCaptureModal(true);
+          setOpenAccessModal(false);
+        }}
+      />
+      <BiometricCaptureDialog
+        open={openCaptureModal}
+        setIsOpen={() => setOpenCaptureModal(false)}
+      />
     </Sheet>
   );
 }

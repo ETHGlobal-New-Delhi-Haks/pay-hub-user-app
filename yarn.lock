@@ -207,6 +207,11 @@
     tslib "2.6.2"
     yargs "17.7.2"
 
+"@capacitor/camera@^7.0.2":
+  version "7.0.2"
+  resolved "https://registry.yarnpkg.com/@capacitor/camera/-/camera-7.0.2.tgz#252c7ca951147606fb0dbf30e884001b80ee09b5"
+  integrity sha512-1/UbZZ8MSbRTMMvjQHQFJ0cs2ZNURNoyuUex0rAJwECsyHO0I5SRvu7YoMY5qTcRWScBcqT+3QZcJvETtRg7ug==
+
 "@capacitor/cli@^5.3.0":
   version "5.7.8"
   resolved "https://registry.yarnpkg.com/@capacitor/cli/-/cli-5.7.8.tgz#0fd28569b286192db71335dbd16222c341322785"
