@@ -76,7 +76,7 @@ export function BiometricCaptureDialog({ open, setIsOpen }: Props) {
 
   return (
     <Modal open={open} onClose={handleClose}>
-      <ModalDialog size="lg" sx={{ maxWidth: 500, width: 'calc(100% - 24px)' }}>
+      <ModalDialog size="lg" sx={{ maxWidth: 500, maxHeight: 700, width: 'calc(100% - 24px)' }}>
         <Box>
           <Typography level='h2'>Set up Face Recognition</Typography>
           <Typography>
@@ -94,7 +94,7 @@ export function BiometricCaptureDialog({ open, setIsOpen }: Props) {
                   position: 'relative',
                   width: '100%',
                   maxWidth: 400,
-                  maxHeight: 600,
+                  maxHeight: 250,
                   height: '100%',
                   borderRadius: '60px',
                   overflow: 'hidden',
