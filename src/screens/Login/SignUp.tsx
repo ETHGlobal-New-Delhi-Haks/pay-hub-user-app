@@ -130,14 +130,14 @@ export function SignUp({ toggleSignScreen, onLogin }: LoginScreenProps) {
                 !!Object.values(values).some((value) => !value)
               }
             >
-              Sign up
+              Sign in
             </Button>
             <Typography
               level="body-sm"
               sx={{ textAlign: 'center' }}
               onClick={toggleSignScreen}
             >
-              Sign in
+              Sign up
             </Typography>
           </Box>
         </Box>
