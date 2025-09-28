@@ -19,7 +19,7 @@ import { AppBar } from '../../components/AppBar';
 import { useAppKitAccount } from '@reown/appkit/react';
 import { EtherIcon } from '../../components/Icons/Ether';
 import { shortText } from '../../utils/text';
-import { ChevronRight } from 'lucide-react';
+import { ChevronRight, RefreshCcw } from 'lucide-react';
 import { useAddWallet } from '../AddWallet/hooks';
 import { useFetchBalances } from '../../api/balance';
 import { ArbitrumIcon } from '../../components/Icons/Arbitrum';
@@ -44,8 +44,9 @@ const iconMap = {
 
 export function WalletsPage({ onBack, toAddWallet, onWalletSelect }: Props) {
   useAddWallet();
+  const [isRotating, setIsRotating] = useState(false);
   const { allAccounts, isConnected } = useAppKitAccount();
-  const { data, isFetched } = useFetchBalances();
+  const { data, isFetched, refetch } = useFetchBalances();
   const [currentChain, setCurrentChain] = useState('1');
 
   const handleChange = (_: unknown, newValue: string | null) => {
@@ -54,12 +55,35 @@ export function WalletsPage({ onBack, toAddWallet, onWalletSelect }: Props) {
     }
   };
 
+  const handleRefresh = () => {
+    setIsRotating(true);
+    refetch();
+
+    setTimeout(() => {
+      setIsRotating(false);
+    }, 300);
+  };
+
   return (
     <Sheet sx={{ minHeight: '100dvh' }}>
       <AppBar title="Wallet" onBack={onBack} right={<Box />} />
       <Box sx={{ overflow: 'scroll', height: 'calc(100vh - 68px)' }}>
         <Card sx={{ m: 2, px: 1, py: 3, borderRadius: 16 }}>
-          <Typography level="h4">Select blockchain</Typography>
+          <Box
+            display="flex"
+            alignItems="center"
+            justifyContent="space-between"
+          >
+            <Typography level="h4">Select blockchain</Typography>
+            <Box onClick={handleRefresh}>
+              <RefreshCcw
+                style={{
+                  transform: isRotating ? 'rotate(360deg)' : 'rotate(0deg)',
+                  transition: 'transform 0.3s ease-in-out',
+                }}
+              />
+            </Box>
+          </Box>
           <Select defaultValue="1" onChange={handleChange}>
             <Option value="1">
               <EtherIcon /> Ethereum
