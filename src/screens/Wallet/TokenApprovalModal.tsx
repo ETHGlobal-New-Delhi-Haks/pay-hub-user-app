@@ -27,10 +27,8 @@ interface ApprovalModalProps {
   open: boolean;
   onClose: () => void;
   token?: TokenApi;
-  spenderAddress: string;
-  spenderName?: string;
   currentAllowance?: string;
-  onApprove: (amount: string) => Promise<void>;
+  onApprove: (amount: string) => void;
   isLoading?: boolean;
 }
 
