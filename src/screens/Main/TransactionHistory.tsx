@@ -4,58 +4,43 @@ import { Clock, CheckCircle2 } from 'lucide-react';
 const mockTransactions = [
   {
     id: '1',
-    amount: '100',
-    merchant: 'Pepsi',
-    token: 'BNB',
-    network: 'BSC',
-    status: 'completed',
+    amount: '0,074.00',
+    merchant: "Joye's flowers",
+    token: 'ETH',
+    network: 'Ethereum',
+    status: 'pending',
     time: '2 min ago',
-    usdValue: '245.50',
-    merchantLogo: '🥤',
+    usdValue: '300.00',
   },
   {
     id: '2',
-    amount: '50',
-    merchant: 'Spotify',
-    token: 'USDT',
+    amount: '215.05',
+    merchant: 'Bob&Co',
+    token: '1INCH',
     network: 'Ethereum',
     status: 'completed',
     time: '1 hour ago',
     usdValue: '50.00',
-    merchantLogo: '🎵',
   },
   {
     id: '3',
-    amount: '200',
-    merchant: 'Apple',
-    token: 'ETH',
+    amount: '657.11',
+    merchant: 'Bubbles',
+    token: 'DOGE',
     network: 'Ethereum',
-    status: 'pending',
+    status: 'completed',
     time: '3 hours ago',
-    usdValue: '520.00',
-    merchantLogo: '🍎',
+    usdValue: '151.00',
   },
   {
     id: '4',
-    amount: '75',
-    merchant: 'Netflix',
+    amount: '135.2',
+    merchant: 'Cofemania',
     token: 'USDC',
-    network: 'Polygon',
+    network: 'MATIC',
     status: 'completed',
     time: '1 day ago',
-    usdValue: '75.00',
-    merchantLogo: '🎬',
-  },
-  {
-    id: '5',
-    amount: '300',
-    merchant: 'Amazon',
-    token: 'DAI',
-    network: 'Ethereum',
-    status: 'completed',
-    time: '2 days ago',
-    usdValue: '299.85',
-    merchantLogo: '📦',
+    usdValue: '30.00',
   },
 ];
 
@@ -185,7 +170,7 @@ export default function BeautifulTransactionHistory() {
                           fontWeight: 500,
                         }}
                       >
-                        ${tx.usdValue}
+                        PYUSD {tx.usdValue}
                       </Typography>
                     </Box>
                   </Stack>

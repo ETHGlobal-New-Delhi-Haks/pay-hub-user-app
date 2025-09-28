@@ -14,7 +14,7 @@ export function BalanceCard() {
         <Skeleton height={20} width={100}/>
       )}
       <Typography level="h1" sx={{ mt: 2, color: 'white' }}>
-        $ 272.30
+        PYUSD 272.30
       </Typography>
       <Typography level="body-md" sx={{ mt: 2, color: 'lightgray' }}>
         Your Balance
